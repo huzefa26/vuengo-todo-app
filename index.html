@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Something</title>
+	<script src="https://cdn.jsdelivr.net/npm/vue@2.6.12"></script>
+	<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
+	<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"> -->
+	<style type="text/css">
+		.select, select {
+			width: 100%;
+		}
+		.card {
+			margin-bottom: 20px;
+		}
+		.done {
+			opacity: 0.3;
+		}
+	</style>
+</head>
+<body>
+	<div id="app" class="container">
+		<h1 class="title">To Do</h1>
+		<hr>
+		<div class="columns">
+			<div class="column is-3 is-offset-3">
+				<form>
+					<h2 class="subtitle">Add Task</h2>
+					<div class="field">
+						<label class="label">Describe: </label>
+						<div class="control">
+							<input class="input" type="text">
+						</div>
+					</div>
+					<div class="field">
+						<label class="label">Status: </label>
+						<div class="control">
+							<div class="select">
+								<select>
+									<option value="todo">To Do</option>
+									<option value="done">Done</option>
+								</select>
+							</div>
+						</div>
+					</div>
+					<div class="field">
+						<div class="control">
+							<button class="button is-link">Add</button>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+
+		<div class="columns">
+			<div class="column is-6">
+				<h2 class="subtitle">To Do</h2>
+				<div class="todo">
+					<div class="card">
+						<div class="card-content">Task Description</div>
+						<footer class="card-footer">
+							<a class="card-footer-item">Done</a>
+						</footer>
+					</div>
+				</div>
+			</div>
+
+			<div class="column is-6">
+				<h2 class="subtitle">Done</h2>
+				<div class="done">
+					<div class="card">
+						<div class="card-content">Task Description</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- <script src="build.js"></script> -->
+	<script>
+		var app = new Vue({
+			el: '#app',
+			delimiters: ['[[', ']]'],
+			data() {
+				return {
+					tasks: []
+				};
+			},
+			mounted() {
+				this.getTasks();
+			},
+			methods: {
+				getTasks() {
+					axios({
+						method: 'get',
+						url: 'http://127.0.0.1:8000/tasks',
+						auth: {
+							username: 'admin',
+							password: 'password'
+						}
+					}).then(response => this.tasks = response.data)
+					.catch(error => console.log(error));
+				}
+			}
+		});
+	</script>
+</body>
+</html>
+<!-- https://www.youtube.com/watch?v=j5DKSvAB-Ww -->
